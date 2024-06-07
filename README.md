@@ -23,7 +23,7 @@ This repository will contain the code for our informative path planning (IPP) fr
 # Paper
 If you find this useful for your research, please consider citing our paper:
 
-* Nicolas Gorlo, Lukas Schmid, and Luca Carlone, "**Long-Term Human Trajectory Prediction using 3D Dynamic Scene Graphs**", in *ArXiv Preprint*, arXiv:2405.00552, 2024. 
+* Friedrich M. Rockenbauer, Jaeyoung Lim, Marcus G. M ̈uller, Roland Siegwart, and Lukas Schmid, "**Traversing Mars: Co-operative Informative Path Planning to Efficiently Navigate Unknown Scenes**", in *ArXiv Preprint*, 2024. 
   ```bibtex
    @misc{Rockenbauer2024ScoutingIPP,
       title={Traversing Mars: Co-operative Informative Path Planning to Efficiently Navigate Unknown Scenes}, 
