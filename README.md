@@ -8,7 +8,7 @@ This repository will contain the code for our informative path planning (IPP) fr
 
 # Table of Contents
 **Credits**
-* [Paper](https://arxiv.org/abs/2406.05313)
+* [Paper](#Paper)
 * [Video](#Video)
 
 > **__Note__** The code will be released here shortly.
@@ -23,7 +23,7 @@ This repository will contain the code for our informative path planning (IPP) fr
 # Paper
 If you find this useful for your research, please consider citing our paper:
 
-* Friedrich M. Rockenbauer, Jaeyoung Lim, Marcus G. M ̈uller, Roland Siegwart, and Lukas Schmid, "**Traversing Mars: Co-operative Informative Path Planning to Efficiently Navigate Unknown Scenes**", in *ArXiv Preprint*, 2024. 
+* Friedrich M. Rockenbauer, Jaeyoung Lim, Marcus G. Müller, Roland Siegwart, and Lukas Schmid, "**Traversing Mars: Co-operative Informative Path Planning to Efficiently Navigate Unknown Scenes**", in *ArXiv Preprint*, arxiv:2406.05313, 2024. [ [ArXiv](https://arxiv.org/abs/2406.05313) ]
   ```bibtex
    @misc{Rockenbauer2024ScoutingIPP,
       title={Traversing Mars: Co-operative Informative Path Planning to Efficiently Navigate Unknown Scenes}, 
