@@ -23,14 +23,17 @@ This repository will contain the code for our informative path planning (IPP) fr
 # Paper
 If you find this useful for your research, please consider citing our paper:
 
-* Friedrich M. Rockenbauer, Jaeyoung Lim, Marcus G. Müller, Roland Siegwart, and Lukas Schmid, "**Traversing Mars: Cooperative Informative Path Planning to Efficiently Navigate Unknown Scenes**", in *ArXiv Preprint*, arxiv:2406.05313, 2024. [ [ArXiv](https://arxiv.org/abs/2406.05313) ]
-  ```bibtex
-   @misc{Rockenbauer2024ScoutingIPP,
-      title={Traversing Mars: Cooperative Informative Path Planning to Efficiently Navigate Unknown Scenes}, 
-      author={Friedrich M. Rockenbauer and Jaeyoung Lim and Marcus G. Müller and Roland Siegwart and Lukas Schmid},
-      year={2024},
-      eprint={2406.05313},
-      archivePrefix={arXiv},
-      primaryClass={cs.RO}
-   }
+* F. M. Rockenbauer, J. Lim, M. G. Müller, R. Siegwart and L. Schmid, "**Traversing Mars: Cooperative Informative Path Planning to Efficiently Navigate Unknown Scenes**" in *IEEE Robotics and Automation Letters*, vol. 10, no. 2, pp. 1776-1783, Feb. 2025, doi: 10.1109/LRA.2024.3513036 [ [IEEE](https://doi.org/10.1109/LRA.2024.3513036) ] [ [ArXiv](https://arxiv.org/abs/2406.05313) ]
+```bibtex
+  @ARTICLE{10783051,
+    author={Rockenbauer, Friedrich M. and Lim, Jaeyoung and Müller, Marcus G. and Siegwart, Roland and Schmid, Lukas},
+    journal={IEEE Robotics and Automation Letters}, 
+    title={Traversing Mars: Cooperative Informative Path Planning to Efficiently Navigate Unknown Scenes}, 
+    year={2025},
+    volume={10},
+    number={2},
+    pages={1776-1783},
+    keywords={Robots;Costs;Space exploration;Path planning;Navigation;Planning;Mobile robots;Green products;Wheels;Uncertainty;View planning for SLAM;path planning for multiple mobile robots or agents;space robotics and automation},
+    doi={10.1109/LRA.2024.3513036}
+    }
   ```
