@@ -1,0 +1,2 @@
+- git: {local-name: ompl, uri: 'git@github.com:ompl/ompl.git' version='1.5.2'}
+- git: {local-name: grid_map, uri: 'git@github.com:ANYbotics/grid_map.git', version: 'melodic-devel'}

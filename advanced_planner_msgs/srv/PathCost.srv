@@ -1,0 +1,4 @@
+int64 map_id
+---
+float64 cost
+string cost_type

@@ -1,0 +1,59 @@
+diff --git a/active_3d_planning_core/include/active_3d_planning_core/data/trajectory_segment.h b/active_3d_planning_core/include/active_3d_planning_core/data/trajectory_segment.h
+index 9e1b1bc..0dd8791 100644
+--- a/active_3d_planning_core/include/active_3d_planning_core/data/trajectory_segment.h
++++ b/active_3d_planning_core/include/active_3d_planning_core/data/trajectory_segment.h
+@@ -29,6 +29,7 @@ struct TrajectorySegment {
+   // flags
+   bool tg_visited;  // trajectory generator visited during expansion site
+   // selection
++  bool gain_terminal; // specifies if the gain of this node can still change
+ 
+   // pointer to parent trajectory, nullptr for currently active segment (root)
+   TrajectorySegment* parent;
+diff --git a/active_3d_planning_core/include/active_3d_planning_core/map/map.h b/active_3d_planning_core/include/active_3d_planning_core/map/map.h
+index 191f040..c934b8c 100644
+--- a/active_3d_planning_core/include/active_3d_planning_core/map/map.h
++++ b/active_3d_planning_core/include/active_3d_planning_core/map/map.h
+@@ -24,6 +24,9 @@ class Map : public Module {
+ 
+   // check whether point is part of the map
+   virtual bool isObserved(const Eigen::Vector3d& point) = 0;
++
++  // contains tasks performed whenever current target is reached
++  virtual void targetReachedCallback() = 0;
+ };
+ 
+ }  // namespace active_3d_planning
+diff --git a/active_3d_planning_core/src/data/trajectory_segment.cpp b/active_3d_planning_core/src/data/trajectory_segment.cpp
+index 468a6df..b151e62 100644
+--- a/active_3d_planning_core/src/data/trajectory_segment.cpp
++++ b/active_3d_planning_core/src/data/trajectory_segment.cpp
+@@ -6,7 +6,7 @@
+ namespace active_3d_planning {
+ 
+ TrajectorySegment::TrajectorySegment()
+-    : parent(nullptr), tg_visited(false), gain(0.0), cost(0.0), value(0.0) {}
++    : parent(nullptr), gain_terminal(false), tg_visited(false), gain(0.0), cost(0.0), value(0.0) {}
+ 
+ bool TrajectorySegment::compare(TrajectorySegment a, TrajectorySegment b) {
+   return (a.value < b.value);
+@@ -63,6 +63,7 @@ TrajectorySegment TrajectorySegment::shallowCopy() {
+   copy.cost = cost;
+   copy.value = value;
+   copy.tg_visited = tg_visited;
++  copy.gain_terminal = gain_terminal;
+   copy.parent = parent;
+   return copy;
+ }
+diff --git a/active_3d_planning_core/src/planner/online_planner.cpp b/active_3d_planning_core/src/planner/online_planner.cpp
+index fb78a90..8c07c9a 100644
+--- a/active_3d_planning_core/src/planner/online_planner.cpp
++++ b/active_3d_planning_core/src/planner/online_planner.cpp
+@@ -341,6 +341,7 @@ bool OnlinePlanner::requestNextTrajectory() {
+     perf_uptg = static_cast<double>(std::clock() - timer) / CLOCKS_PER_SEC;
+     timer = std::clock();
+   }
++  trajectory_evaluator_->updateSegment(current_segment_.get());
+   updateEvaluatorStep(current_segment_.get());
+   if (p_log_performance_) {
+     perf_upte = static_cast<double>(std::clock() - timer) / CLOCKS_PER_SEC;

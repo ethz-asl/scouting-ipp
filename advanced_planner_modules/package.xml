@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package format="2">
+    <name>planner_modules_planexp</name>
+    <version>0.0.0</version>
+    <description>Planner modules for scouting IPP.</description>
+
+    <author email="friedrich.rockenbauer@gmail.com">Friedrich M. Rockenbauer</author>
+
+    <maintainer email="friedrich.rockenbauer@gmail.com">Friedrich M. Rockenbauer</maintainer>
+
+    <license>MIT</license>
+
+    <buildtool_depend>catkin</buildtool_depend>
+    <buildtool_depend>catkin_simple</buildtool_depend>
+
+    <depend>active_3d_planning_core</depend>
+    <depend>map_server_planexp</depend>
+    <depend>eigen_catkin</depend>
+    <depend>ompl</depend>
+    <depend>glog_catkin</depend>
+</package>

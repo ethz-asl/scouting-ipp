@@ -1,0 +1,5 @@
+<launch>
+    <node pkg="map_server_planexp" type="map_server_planexp_node" name="map_server_planexp" output="screen">
+    <param name="paths_path" value="/tmp/map_rrt_star_paths/" />
+    </node>
+</launch>

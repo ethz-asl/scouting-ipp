@@ -1,0 +1,158 @@
+<launch>
+    <!-- General arguments -->
+    <arg name="debug_mode"
+         default="false"
+         doc="Run the mapper in debug mode."/>
+
+    <arg name="show_rviz"
+         default="false"
+         doc="Automatically launch Rviz."/>
+
+    <arg name="ignore_mav_obstacles"
+         default="false"
+         doc="Assume the map to be collision free for the MAV."/>
+
+    <arg name="abort_on_collision"
+         default="true"
+         doc="Defines if experiment should end upon collision."/>
+
+    <arg name="is_baseline"
+         default="false"
+         doc="Defines if the experiment is a baseline run."/>
+
+    <!-- Planner arguments -->
+    <arg name="planner_config" default="planners/example_config.yaml"/>
+    <arg name="evaluator_config" default="evaluators/goal_distance.yaml"/>
+    <arg name="experiment_config" default="$(find ros_planner_planexp)/cfg/experiments/example.yaml"/>
+
+    <!-- Airsim arguments -->
+    <arg name="mav_name" default="sim_drone"/>
+
+    <!-- Experiment arguments -->
+    <arg name="record_data" default="true"/>
+    <arg name="delay" default="15"/> <!-- sec -->
+    <arg name="evaluate" default="False"/>
+    <arg name="eval_directory" default="/tmp/"/>
+    <arg name="time_limit" default="10"/> <!-- min -->
+    <arg name="eval_frequency" default="10"/> <!-- sec -->
+    <arg name="record_visualization" default="false"/>
+    <arg name="map_path" default="/home/$(env USER)/data/maps/map_212.png"/>
+    <arg name="map_config_path" default="/home/$(env USER)/data/maps/cfg/map_212.yaml"/>
+    <arg name="height_map_path" default="/home/$(env USER)/data/maps/height/height_212.exr"/>
+    <arg name="paths_path" default="" />
+    <arg name="unknown_init_cost" default="min" />
+    <arg name="eval_planner" default="prm_star" />
+
+
+    <arg name="use_airsim_time" default="False"/>
+    <arg name="voxel_size" default="0.10"/>
+    <arg name="voxels_per_side" default="16"/>
+
+    <arg name="trajectory_file_path" default="/tmp/trajectory_file_mav_simulator.csv"/>
+
+    <!-- Automatically generated arguments -->
+    <arg unless="$(arg debug_mode)" name="launch_prefix" value=""/>
+    <arg if="$(arg debug_mode)" name="launch_prefix"
+         value="gdb -ex run --args"/>
+
+
+
+    <!-- Setup the experiment -->
+    <param name="/use_sim_time" value="true" if="$(arg use_airsim_time)"/>
+    <rosparam command="load" file="$(arg experiment_config)"/>
+
+    <!-- tf -->
+    <node pkg="tf" type="static_transform_publisher"
+          name="static_tf_mission_odom"
+          args="0 0 0 0 0 0 1 /odom /mission 100"/>
+    <node pkg="tf" type="static_transform_publisher"
+          name="static_tf_mission_world"
+          args="0 0 0 0 0 0 1 /mission /world 100"/>
+
+    <!-- Planner -->
+    <group ns="active_3d_planner">
+        <!-- Voxblox -->
+        <!-- <node name="map_server_planexp" pkg="map_server_planexp" type="map_server_planexp_node" output="screen">
+          <remap from="/map_data" to="/$(arg mav_name)/map_data"/>
+          <param name="map_config_path" value="$(arg map_config_path)" />
+          <param name="ignore_mav_obstacles" value="$(arg ignore_mav_obstacles)" />
+          <param name="paths_path" value="$(arg paths_path)" />
+        </node> -->
+
+        <!-- Planner -->
+        <node name="planner_node" pkg="ros_planner_planexp" type="ros_planner_planexp_node" output="screen">
+              <!-- Map Server -->
+          <remap from="/map_data" to="/$(arg mav_name)/map_data"/>
+          <remap from="/map_data_depth" to="/$(arg mav_name)/map_data_depth"/>
+          <param name="use_tf_transforms" value="false" />
+          <param name="tsdf_voxel_size" value="$(arg voxel_size)" />
+          <param name="tsdf_voxels_per_side" value="$(arg voxels_per_side)" />
+          <param name="update_mesh_every_n_sec" value="0.0" />
+          <param name="publish_traversable" value="false" />
+          <param name="publish_pointclouds" value="false" />
+          <param name="map_config_path" value="$(arg map_config_path)" />
+          <param name="ignore_mav_obstacles" value="$(arg ignore_mav_obstacles)" />
+          <param name="paths_path" value="$(arg paths_path)" />
+          <param name="unknown_init_cost" value="$(arg unknown_init_cost)" />
+          <param name="map/planner_type" value="$(arg eval_planner)" />
+
+            <!-- General Settings -->
+          <remap from="odometry" to="/$(arg mav_name)/ground_truth/odometry" />
+          <remap from="command/trajectory" to="/$(arg mav_name)/command/trajectory" />
+
+          <!-- Build the Planner by Configuration     -->
+          <rosparam command="load" file="$(find ros_planner_planexp)/cfg/$(arg planner_config)"/>
+          <rosparam command="load" file="$(find ros_planner_planexp)/cfg/$(arg evaluator_config)"/>
+        </node>
+    </group>
+
+    <group ns="$(arg mav_name)">
+        <!-- Setup a mav -->
+        <node pkg="mav_simulator" type="mav_simulator_node" name="mav_simulator" output="screen">
+              <remap from="odometry" to="ground_truth/odometry"/>
+              <param name="map_path" value="$(arg map_path)" />
+              <param name="map_config_path" value="$(arg map_config_path)" />
+              <param name="height_map_path" value="$(arg height_map_path)" />
+              <param name="ignore_mav_obstacles" value="$(arg ignore_mav_obstacles)" />
+              <param name="trajectory_file_path" value="$(arg trajectory_file_path)" />
+              <param name="dump_trajectory" value="$(arg is_baseline)" />
+              <param name="provide_full_init_depth" value="false" />
+              <param name="init_area_with" value="4.0625" />
+              <param name="init_area_height" value="4.0625" />
+        </node>
+    </group>
+
+
+    <!-- Experiment startup and Evaluation -->
+    <group ns="evaluation">
+        <!-- Manager -->
+        <node name="experiment_manager" pkg="ros_planner_planexp"
+              type="experiment_manager.py" output="screen" required="true">
+            <remap from="collision" to="/$(arg mav_name)/collision"/>
+            <param name="ns_planner" value="/active_3d_planner/planner_node"/>
+            <param name="ns_map_server" value="/active_3d_planner/map_server_planexp"/>
+            <param name="ns_mav" value="/$(arg mav_name)"/>
+            <param name="delay" value="$(arg delay)"/>
+            <param name="evaluate" value="$(arg record_data)"/>
+            <param name="eval_directory" value="$(arg eval_directory)"/>
+            <param name="time_limit" value="$(arg time_limit)"/>
+            <param name="eval_frequency" value="$(arg eval_frequency)"/>
+            <param name="startup_timeout" value="0.0"/>
+            <param name="abort_on_collision" value="$(arg abort_on_collision)"/>
+            <param name="is_baseline" value="$(arg is_baseline)"/>
+        </node>
+
+        <!-- Record visualization topics -->
+        <node pkg="rosbag" type="record" name="rosbag_vis_recorder"
+              args="record -o $(arg eval_directory)/tmp_bags/tmp_bag /rosout /clock /tf /active_3d_planner/trajectory_visualization /map_vis /sim_drone/ground_truth/odometry"
+              if="$(eval arg('record_data') and arg('record_visualization'))"/>
+    </group>
+
+
+    <!-- Visualization -->
+    <group if="$(arg show_rviz)">
+        <arg name="rviz_file"
+             default="$(find ros_planner_planexp)/cfg/visualization/30x40_planner.rviz"/>
+        <node type="rviz" name="rviz" pkg="rviz" args="-d $(arg rviz_file)"/>
+    </group>
+</launch>

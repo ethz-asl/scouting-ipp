@@ -1,0 +1,126 @@
+# General parameters for the planner node
+replan_pos_threshold: 0.15
+replan_yaw_threshold: -0.15
+
+max_new_segments: 0
+min_new_segments: 0
+max_new_tries: 0
+min_new_tries: 0
+min_new_value: 0
+
+# Verbosity and visualization
+verbose: true
+verbose_modules: true
+build_modules_on_init: true
+expand_batch: 1
+visualize: true
+visualize_gain: true
+highlight_executed_trajectory: true
+performance_log_dir: "/tmp/"
+log_performance: true
+
+# Specify a map representation
+map:
+  type: "MapPlanExp"
+
+# System constraints
+system_constraints:
+  v_max: 1.0
+  a_max: 1.0
+  yaw_rate_max: 1.6
+  yaw_accel_max: 1.6
+  collision_radius: 0.1
+
+# Specifying a trajectory generator
+trajectory_generator:
+  type: "RRTStar"
+  collision_optimistic: false
+  bounding_volume_args: "/map_bounding_volume"
+
+  # Generator Params
+  all_semgents_feasible: false
+  crop_segments: true
+  crop_margin: 0.3
+  crop_min_length: 0.2
+  min_path_length: 1.0
+  max_extension_range: 5.0
+  maximum_tries: 1000
+  sampling_rate: 20.0
+  sample_yaw: false
+
+  sampling_mode: "uniform"
+  #semilocal_sampling_count: 10
+  #semilocal_sampling_radius_max: 1.5
+  #semilocal_sampling_radius_min: 0.1
+
+  rewire_root: true
+  rewire_intermediate: true
+  reinsert_root: true
+  max_rewire_range: 5.1
+  max_density_range: 1.0
+  n_neighbors: 30
+
+  # Generator Update step
+#  generator_updater:
+#    type: "RecheckCollision"
+
+# Specifying a trajectory evaluator
+trajectory_evaluator:
+  type: "RRTStarEvaluatorAdapter"
+
+  # Evaluator params and sensor model for simulated sensor evaluators
+#  following_evaluator:
+#    type: "ContinuousYawPlanningEvaluator"
+#    n_directions: 12
+#    n_sections_fov: 3
+#    update_range: 3.0
+#    update_gain: 0.0S
+#    update_sections_separate: false
+
+  following_evaluator:
+    type: "RRTStarEvaluator" #type: "RRTStarEvaluator"  #type: "ExpandReachableAreaEvaluator" #type: "AverageViewCostEvaluator" #type: "ExpandLowCostAreaEvaluator" #type: "GoalDistanceEvaluator"  #type: "NaiveEvaluator"
+    visualize_sensor_view: true
+    bounding_volume_args: "/target_bounding_volume"
+    non_path_voxel_gain: 0.001
+
+    sensor_model:
+      type: "CameraModelPlanExp"
+      sampling_time: 0.0
+      ray_length: 5.0
+      focal_length: 320.0
+      resolution_x: 65 #65px*0.0625 = 4.0625m
+      resolution_y: 65 #65px*0.0625 = 4.0625m
+      downsampling_factor: 3.0
+      half_fov: 32
+
+    # Choose a cost
+    cost_computer:
+      type: "SegmentTime" #type: "CostPlanExpMapIntegral"
+
+    # How to compute the values
+    value_computer:
+      type: "GlobalNormalizedGain"
+
+    # Execution policy for available segments
+    next_selector:
+      type: "SubsequentBest"
+
+    # Evaluator Update step
+    evaluator_updater:
+      type: "ConstrainedUpdater"
+      minimum_gain: 0.001
+      update_range: 4.0
+      following_updater:
+        type: "UpdateAll"
+        update_gain: true
+        update_cost: false
+        update_value: true
+
+# Specify a backtracker if the planner gets stuck
+back_tracker:
+  type: "RotateReverse"
+  turn_rate: 1.6
+  update_rate: 2.0
+  sampling_rate: 20.0
+  n_rotations: 5
+  stack_size: 10

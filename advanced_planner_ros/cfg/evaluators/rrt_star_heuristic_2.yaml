@@ -1,0 +1,34 @@
+# Specify a map representation
+map:
+  type: "MapPlanExp"
+  use_uncertainty_map: false
+  use_height_map: true
+  compute_reachability: true
+  compute_closest_observed: false
+  compute_path: true
+
+trajectory_evaluator:
+  following_evaluator:
+    type: "RRTStarEvaluator"
+    do_binary_check: false
+    non_path_voxel_gain: 0.005
+    use_distance_discount: true
+    discount_offset: 0.1
+
+    cost_computer:
+      type: "SegmentTime" #type: "CostPlanExpMapIntegral"
+
+    # Execution policy for available segments
+    next_selector:
+      type: "SubsequentBest"
+
+    # Evaluator Update step
+    evaluator_updater:
+      type: "RRTStarUpdater"
+      minimum_gain: 0.001
+      update_range: 4.0
+      following_updater:
+        type: "UpdateAll"
+        update_gain: true
+        update_cost: false
+        update_value: true

@@ -1,0 +1,14 @@
+<launch>
+    <arg name="debug_gdb"
+         default="false"
+         doc="Run the mapper in debug mode."/>
+      <arg unless="$(arg debug_gdb)" name="launch_prefix" value="" />
+      <arg if="$(arg debug_gdb)" name="launch_prefix" value="gdbserver :65535" />
+    <node pkg="mav_simulator" type="mav_simulator_node" name="mav_simulator" output="screen" launch-prefix="$(arg launch_prefix)">
+        <!--<param name="planner_config" value="$(find planner_planexp)/cfg/config.yaml"/>-->
+        <!-- <param name="mounting_rotation_w" value="0.9807"/>
+        <param name="mounting_rotation_y" value="0.1950"/> -->
+        <!-- <param name="mounting_rotation_w" value="0.8314"/> -->
+        <param name="dump_trajectory" value="true"/>
+    </node>
+</launch>

@@ -1,0 +1,30 @@
+# Specify a map representation
+map:
+  type: "MapPlanExp"
+  use_uncertainty_map: false
+  use_height_map: true
+  compute_reachability: true
+  compute_closest_observed: false
+  compute_path: false
+
+trajectory_evaluator:
+  following_evaluator:
+    type: "NaiveEvaluator"
+
+    cost_computer:
+      type: "SegmentTime" #type: "CostPlanExpMapIntegral"
+
+    # Execution policy for available segments
+    next_selector:
+      type: "SubsequentBest"
+
+    # Evaluator Update step
+    evaluator_updater:
+      type: "ConstrainedUpdater"
+      minimum_gain: 0.001
+      update_range: 4.0
+      following_updater:
+        type: "UpdateAll"
+        update_gain: true
+        update_cost: false
+        update_value: true

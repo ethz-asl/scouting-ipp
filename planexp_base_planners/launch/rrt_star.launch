@@ -1,0 +1,14 @@
+<launch>
+    <arg name="debug_gdb"
+         default="false"
+         doc="Run the mapper in debug mode."/>
+      <arg unless="$(arg debug_gdb)" name="launch_prefix" value="" />
+      <arg if="$(arg debug_gdb)" name="launch_prefix" value="gdbserver :65535" />
+    <node pkg="planexp_base_planners" type="planexp_base_planner_node" name="planexp_base_planner_rrt_star" output="screen" launch-prefix="$(arg launch_prefix)">
+        <param name="planner_type" value="rrt_star"/>
+        <param name="map_config_path" value="~/data/maps/cfg/map_212.yaml"/>
+        <!--<param name="mounting_rotation_y" value="0.1950"/> -->
+        <!-- <param name="mounting_rotation_w" value="0.8314"/>
+        <param name="mounting_rotation_y" value="0.55557"/> -->
+    </node>
+</launch>

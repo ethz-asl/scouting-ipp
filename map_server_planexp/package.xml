@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<package format="2">
+    <name>map_server_planexp</name>
+    <version>0.0.0</version>
+    <description>Map server for scouting IPP.</description>
+
+    <author email="friedrich.rockenbauer@gmail.com">Friedrich M. Rockenbauer</author>
+
+    <maintainer email="friedrich.rockenbauer@gmail.com">Friedrich M. Rockenbauer</maintainer>
+
+    <license>MIT</license>
+
+    <buildtool_depend>catkin</buildtool_depend>
+    <buildtool_depend>catkin_simple</buildtool_depend>
+
+    <depend>roscpp</depend>
+    <depend>rospy</depend>
+    <depend>glog_catkin</depend>
+    <depend>planexp_msgs</depend>
+    <depend>cv_bridge</depend>
+    <depend>image_transport</depend>
+    <depend>std_srvs</depend>
+    <depend>nav_msgs</depend>
+    <depend>grid_map_ros</depend>
+    <depend>grid_map_core</depend>
+    <depend>grid_map_msgs</depend>
+    <depend>planexp_base_planners</depend>
+    <depend>ompl</depend>
+</package>

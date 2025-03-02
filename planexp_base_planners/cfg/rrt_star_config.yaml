@@ -1,0 +1,19 @@
+verbose: false
+save_output_map: true
+save_tree_map: false
+save_path: true
+map:
+  source: 2   # 0...RANDOM, 1...OAISYS, 2..IMAGE_FILE
+  path: "~/data/maps/map_212.png"
+  topic: "/oaisys_client/segmentation"
+  width: 40.0
+  height: 30.0
+  intraversable_label_ids: [0, 9999]
+  max_iterations: 1000
+planner:
+  optim_time: 30.0
+  min_distance: 5.0
+  sample_distance: 0.03
+  step_range: 50.0
+  goal_bias: 0.05
+  success_threshold: 0.05

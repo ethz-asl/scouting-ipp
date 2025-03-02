@@ -1,0 +1,15 @@
+name: "map_102"
+type: "real"	 #artificial/real
+resolution: [640, 480]	 #[px] width x height
+width: 40.0	 #[m]
+height: 30.0	 #[m]
+n_data_classes: 15
+present_ids: [0, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60]
+obstacle_ids_mav: [0]
+obstacle_ids_rov: [0]
+unknown_id: 3599
+start_location: [0.5, 0.5]	 #[m]
+goal_location: [39.5, 29.5]	 #[m]
+explorable_free_space: 919.14453125	 #[m^2]
+optimal_rrt_rov_path_cost: 2011.27	 #[1] Integral over map cost
+optimal_prm_rov_path_cost: 2207.37	 #[1] Integral over map cost

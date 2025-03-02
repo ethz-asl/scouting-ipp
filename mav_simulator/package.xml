@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package format="2">
+    <name>mav_simulator</name>
+    <version>0.0.0</version>
+    <description>MAV simulator for the scouting IPP.</description>
+
+    <maintainer email="friedrich.rockenbauer@gmail.com">Friedrich M. Rocknbauer</maintainer>
+
+    <license>MIT</license>
+
+    <buildtool_depend>catkin</buildtool_depend>
+    <buildtool_depend>catkin_simple</buildtool_depend>
+    <build_depend>message_generation</build_depend>
+    <depend>roscpp</depend>
+    <depend>rospy</depend>
+    <depend>nav_msgs</depend>
+    <depend>mav_msgs</depend>
+    <depend>planexp_msgs</depend>
+    <depend>std_msgs</depend>
+    <depend>eigen_catkin</depend>
+    <depend>cv_bridge</depend>
+
+</package>

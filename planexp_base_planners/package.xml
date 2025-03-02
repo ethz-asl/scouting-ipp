@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<package>
+    <name>planexp_base_planners</name>
+    <version>0.0.0</version>
+    <description>Planner implementations for the scouting IPP.</description>
+
+    <maintainer email="friedrich.rockenbauer@gmail.com">Friedrich M. Rocknbauer</maintainer>
+
+    <license>MIT</license>
+
+    <buildtool_depend>catkin</buildtool_depend>
+    <build_depend>roscpp</build_depend>
+    <build_depend>yaml_cpp_catkin</build_depend>
+    <build_depend>rospy</build_depend>
+    <build_depend>roslib</build_depend>
+    <build_depend>std_msgs</build_depend>
+    <build_depend>sensor_msgs</build_depend>
+    <build_depend>nav_msgs</build_depend>
+    <build_depend>geometry_msgs</build_depend>
+    <build_depend>tf</build_depend>
+    <build_depend>eigen_catkin</build_depend>
+    <build_depend>ompl</build_depend>
+    <run_depend>eigen_catkin</run_depend>
+    <build_depend>cv_bridge</build_depend>
+    <run_depend>roscpp</run_depend>
+    <run_depend>rospy</run_depend>
+    <run_depend>ompl</run_depend>
+
+</package>
